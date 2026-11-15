@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#eaf7fa" />
+  <meta name="description" content="Scomate — School Management Information & Technology." />
+  <title>Scomate — A smarter school ecosystem</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --azure: #69c6e5;
+      --azure-strong: #38afd3;
+      --navy: #123247;
+      --navy-2: #1a455b;
+      --teal: #36b6ac;
+      --mist: #eaf7fa;
+      --paper: #f7fcfd;
+      --coral: #ff9b83;
+      --slate: #6f8794;
+      --line: rgba(18, 50, 71, .12);
+      --ease: cubic-bezier(.22, 1, .36, 1);
+      --page: min(1180px, calc(100% - 64px));
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--paper); }
+    body {
+      margin: 0; color: var(--navy); background: var(--paper);
+      font-family: 'DM Sans', sans-serif; overflow-x: hidden;
+      -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+    }
+    body::selection { background: var(--azure); color: var(--navy); }
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+    button:focus-visible, a:focus-visible { outline: 3px solid var(--coral); outline-offset: 4px; }
+    .page-width { width: var(--page); margin-inline: auto; }
+    .topbar {
+      position: absolute; z-index: 20; inset: 0 0 auto; height: 88px;
+      display: flex; align-items: center; color: var(--navy);
+    }
+    .nav-wrap { width: var(--page); margin: auto; display:flex; align-items:center; justify-content:space-between; gap:28px; }
+    .brand { display:flex; align-items:center; gap:11px; font:800 21px/1 'Manrope', sans-serif; letter-spacing:-.055em; }
+    .brand-mark {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    flex-shrink: 0;
+}
+.brand-mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+    .brand-mark svg { width:20px; height:20px; }
+    .nav-links { display:flex; align-items:center; gap:34px; color:#58717e; font-size:13px; font-weight:600; }
+    .nav-links a { transition:color .25s ease; }
+    .nav-links a:hover { color:var(--navy); }
+    .nav-actions { display:flex; align-items:center; gap:12px; }
+    .nav-download { border:0; border-radius:999px; padding:13px 20px; background:var(--navy); color:white; font-size:12px; font-weight:700; cursor:pointer; transition:transform .25s var(--ease), background .25s ease, box-shadow .25s ease; box-shadow:0 8px 18px rgba(18,50,71,.12); }
+    .nav-download:hover { transform:translateY(-2px); background:#1c4b64; box-shadow:0 12px 24px rgba(18,50,71,.18); }
+    .menu-toggle { display:none; border:1px solid var(--line); width:42px; height:42px; border-radius:50%; background:white; color:var(--navy); cursor:pointer; }
+
+    .hero { min-height:790px; position:relative; isolation:isolate; overflow:hidden; padding:164px 0 86px; background:linear-gradient(180deg,#eaf7fa 0%,#f5fbfc 66%,#e4f4f7 100%); }
+    .hero::before { content:""; position:absolute; z-index:-2; width:780px; height:780px; border-radius:50%; background:radial-gradient(circle,rgba(105,198,229,.28),rgba(105,198,229,0) 68%); top:-310px; right:-100px; }
+    .hero::after { content:""; position:absolute; z-index:-1; height:220px; left:-8%; right:-8%; bottom:-135px; border-radius:50% 50% 0 0; background:#d8eff4; filter:blur(1px); }
+    .hero-grid { display:grid; grid-template-columns:.86fr 1.14fr; align-items:center; gap:22px; position:relative; z-index:2; }
+    .hero-copy { position:relative; z-index:3; padding:18px 0 68px; }
+    .hero-title { max-width:590px; margin:0; font:800 clamp(3.4rem,5.9vw,5.2rem)/.99 'Manrope',sans-serif; letter-spacing:-.075em; }
+    .hero-title span { display:block; }
+    .hero-title .title-accent { color:#2a9fc5; font-size:.9em; white-space:nowrap; }
+    .hero-tagline { margin:25px 0 0; max-width:430px; font-size:14px; line-height:1.65; font-weight:700; letter-spacing:.015em; color:#426171; }
+    .hero-description { max-width:430px; margin:12px 0 0; color:#647e8b; font-size:15px; line-height:1.8; }
+    .hero-buttons { display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin-top:30px; }
+    .button-primary, .button-secondary { min-height:50px; display:inline-flex; justify-content:center; align-items:center; gap:11px; padding:0 21px; border-radius:999px; font-size:13px; font-weight:700; border:0; cursor:pointer; transition:transform .25s var(--ease), box-shadow .25s ease, background .25s ease; }
+    .button-primary { color:white; background:var(--navy); box-shadow:0 12px 24px rgba(18,50,71,.16); }
+    .button-primary:hover { transform:translateY(-3px); background:#1d4d67; box-shadow:0 16px 30px rgba(18,50,71,.2); }
+    .button-secondary { background:rgba(255,255,255,.62); border:1px solid rgba(18,50,71,.13); color:var(--navy); }
+    .button-secondary:hover { transform:translateY(-3px); background:white; }
+    .button-primary svg, .button-secondary svg { width:17px; height:17px; }
+    .hero-note { display:flex; gap:9px; align-items:center; color:#78909b; font-size:11px; margin-top:19px; }
+    .hero-note span { width:6px; height:6px; border-radius:50%; background:var(--teal); box-shadow:0 0 0 4px rgba(54,182,172,.12); }
+
+    .campus-stage { position:relative; width:100%; max-width:750px; justify-self:end; perspective:1200px; transform-style:preserve-3d; margin:6px -34px 0 0; }
+    .campus-scene { position:relative; width:100%; aspect-ratio:1.12/1; transform-style:preserve-3d; will-change:transform; }
+    .scene-glow { position:absolute; width:74%; height:58%; left:14%; top:8%; border-radius:50%; background:rgba(105,198,229,.25); filter:blur(55px); transform:translateZ(-90px); }
+    .scene-sun { position:absolute; width:104px; height:104px; right:21%; top:7%; border-radius:50%; background:linear-gradient(145deg,#fff 4%,#d6f4fa 88%); box-shadow:0 0 45px rgba(105,198,229,.38),0 0 100px rgba(105,198,229,.18); transform:translateZ(-65px); }
+    .cloud { position:absolute; height:34px; border-radius:50px; background:rgba(255,255,255,.86); filter:blur(.2px); box-shadow:25px 9px 0 -5px rgba(255,255,255,.8),-24px 10px 0 -8px rgba(255,255,255,.72); }
+    .cloud.one { width:120px; top:18%; left:7%; animation:drift 15s ease-in-out infinite alternate; transform:translateZ(-100px); }
+    .cloud.two { width:155px; top:30%; right:2%; opacity:.75; animation:drift 19s ease-in-out infinite alternate-reverse; transform:translateZ(-35px) scale(.8); }
+    .cloud.three { width:94px; top:12%; left:55%; opacity:.62; animation:drift 17s ease-in-out infinite alternate; transform:translateZ(-150px) scale(.7); }
+    @keyframes drift { from { translate:-12px 0; } to { translate:22px 8px; } }
+    .mountain-back { position:absolute; inset:23% -3% 16%; transform:translateZ(-105px); }
+    .mountain-back svg, .campus-buildings svg { width:100%; height:100%; overflow:visible; }
+    .mountain-front { position:absolute; inset:34% -2% 6%; transform:translateZ(-35px); }
+    .campus-buildings { position:absolute; inset:31% 0 10%; transform:translateZ(38px) rotateX(1deg); transform-origin:50% 80%; filter:drop-shadow(0 20px 22px rgba(34,112,139,.12)); }
+    .campus-foreground { position:absolute; inset:auto -7% -3%; height:30%; border-radius:50% 50% 0 0 / 35% 35% 0 0; background:linear-gradient(180deg,#8ed9d8 0%,#56b8b5 100%); transform:translateZ(105px) rotateX(2deg); box-shadow:inset 0 16px 28px rgba(255,255,255,.2); }
+    .campus-foreground::before { content:""; position:absolute; left:12%; right:8%; top:16%; height:1px; background:rgba(255,255,255,.55); box-shadow:0 14px 0 rgba(255,255,255,.2),0 30px 0 rgba(18,50,71,.07); }
+    .float-panel { position:absolute; z-index:6; display:flex; align-items:center; gap:10px; padding:12px 14px; border:1px solid rgba(255,255,255,.85); background:rgba(255,255,255,.82); backdrop-filter:blur(14px); border-radius:15px; box-shadow:0 16px 36px rgba(28,82,104,.13); transform-style:preserve-3d; }
+    .float-panel strong { display:block; font:800 12px 'Manrope',sans-serif; letter-spacing:-.02em; }
+    .float-panel small { display:block; margin-top:3px; color:#718895; font-size:9px; }
+    .float-icon { width:31px; height:31px; display:grid; place-items:center; border-radius:10px; background:#e4f7fb; color:#228cac; }
+    .float-icon svg { width:17px; height:17px; }
+    .panel-attendance { top:32%; left:-2%; animation:float 6s ease-in-out infinite; transform:translateZ(125px); }
+    .panel-schedule { right:-2%; bottom:24%; animation:float 7s ease-in-out -2s infinite; transform:translateZ(145px); }
+    .panel-connected { left:24%; bottom:4%; animation:float 6.5s ease-in-out -3s infinite; transform:translateZ(165px); }
+    @keyframes float { 0%,100% { translate:0 0; } 50% { translate:0 -10px; } }
+    .scroll-cue { position:absolute; z-index:5; bottom:28px; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:10px; color:#74909c; font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; }
+    .scroll-cue i { display:block; width:1px; height:28px; background:#86b7c7; position:relative; overflow:hidden; }
+    .scroll-cue i::after { content:""; position:absolute; top:-12px; width:1px; height:12px; background:var(--navy); animation:scrollline 1.6s ease-in-out infinite; }
+    @keyframes scrollline { to { transform:translateY(42px); } }
+
+    .statement { padding:118px 0 116px; background:#fff; position:relative; }
+    .statement-inner { display:grid; grid-template-columns:1fr .72fr; gap:80px; align-items:end; }
+    .statement h2 { margin:0; font:800 clamp(2.55rem,5vw,4.7rem)/1.04 'Manrope',sans-serif; letter-spacing:-.07em; max-width:760px; }
+    .statement h2 span { color:#3aa9ca; }
+    .statement-copy { color:#6c8490; font-size:14px; line-height:1.85; max-width:360px; padding-bottom:7px; }
+    .statement-copy p { margin:0; }
+
+    .preview-section { padding:112px 0 126px; background:#eef8fa; position:relative; overflow:hidden; }
+    .preview-section::before { content:""; position:absolute; width:560px; height:560px; border-radius:50%; background:rgba(105,198,229,.18); filter:blur(90px); top:0; right:-260px; pointer-events:none; }
+    .section-heading { display:flex; justify-content:space-between; align-items:end; gap:40px; margin-bottom:58px; position:relative; }
+    .section-heading h2 { margin:0; max-width:680px; font:800 clamp(2.6rem,5vw,4.8rem)/1.02 'Manrope',sans-serif; letter-spacing:-.075em; }
+    .section-heading p { max-width:300px; margin:0 0 4px; color:#6c8490; font-size:13px; line-height:1.8; }
+    .preview-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:34px; align-items:start; position:relative; }
+    .preview-card { min-width:0; text-align:center; }
+    .preview-card:nth-child(2) { transform:translateY(34px); }
+    .device-wrap { width:min(100%,278px); margin:0 auto 26px; position:relative; transform-style:preserve-3d; transition:transform .55s var(--ease); }
+    .device-wrap:hover { transform:translateY(-10px) rotateX(2deg) rotateY(-2deg); }
+    .phone { width:100%; aspect-ratio:9/16; padding:7px; border-radius:35px; background:#102d3d; box-shadow:0 28px 55px rgba(19,61,80,.2),0 4px 10px rgba(18,50,71,.1); position:relative; overflow:hidden; }
+    .phone-screen { width:100%; height:100%; overflow:hidden; position:relative; border-radius:28px; background:#f7fbfc; text-align:left; }
+    .phone-screen::before {
+    display: none;
+}
+    .preview-shot {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+    .phone-status { height:27px; padding:9px 17px 0; display:flex; justify-content:space-between; color:#56717e; font-size:7px; font-weight:700; }
+    .app-top { padding:14px 15px 12px; display:flex; justify-content:space-between; align-items:center; }
+    .app-greeting { font:800 17px/1.15 'Manrope',sans-serif; letter-spacing:-.05em; color:var(--navy); }
+    .app-greeting small { display:block; font:500 8px 'DM Sans',sans-serif; color:#8299a3; letter-spacing:0; margin-bottom:5px; }
+    .avatar { width:28px; height:28px; display:grid; place-items:center; border-radius:10px; background:#c8edf5; color:#277f9d; font:800 9px 'Manrope',sans-serif; }
+    .app-content { padding:0 13px 15px; }
+    .mini-banner { border-radius:15px; padding:13px; background:linear-gradient(135deg,#4cb6d6,#8bd8e6); min-height:91px; color:#fff; position:relative; overflow:hidden; }
+    .mini-banner::after { content:""; position:absolute; width:100px; height:100px; border:1px solid rgba(255,255,255,.35); border-radius:50%; right:-23px; top:13px; box-shadow:0 0 0 12px rgba(255,255,255,.06),0 0 0 26px rgba(255,255,255,.05); }
+    .mini-banner strong { display:block; max-width:125px; font:800 13px/1.2 'Manrope',sans-serif; letter-spacing:-.04em; position:relative; z-index:1; }
+    .mini-banner span { display:block; margin-top:7px; font-size:7px; opacity:.9; position:relative; z-index:1; }
+    .mini-label { margin:15px 0 8px; display:flex; justify-content:space-between; align-items:center; font:800 9px 'Manrope',sans-serif; }
+    .mini-label span:last-child { color:#2d9abd; font:700 7px 'DM Sans',sans-serif; }
+    .mini-stat-row { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
+    .mini-stat { background:#fff; border:1px solid #e8f0f2; border-radius:11px; padding:10px 9px; }
+    .mini-stat strong { display:block; font:800 16px 'Manrope',sans-serif; letter-spacing:-.05em; }
+    .mini-stat small { display:block; margin-top:3px; color:#8297a0; font-size:7px; }
+    .mini-list { display:flex; align-items:center; gap:8px; padding:9px 7px; background:#fff; border:1px solid #e8f0f2; border-radius:10px; margin-top:6px; }
+    .mini-dot { flex:0 0 24px; height:24px; border-radius:8px; display:grid; place-items:center; color:#238eaa; background:#e4f6f9; font-size:9px; font-weight:800; }
+    .mini-list strong { display:block; color:#355565; font-size:8px; }
+    .mini-list small { display:block; color:#8da0a8; margin-top:3px; font-size:6.5px; }
+    .mini-list em { margin-left:auto; color:#3ba9a0; font-size:7px; font-style:normal; font-weight:700; }
+    .phone-nav { position:absolute; bottom:0; left:0; right:0; height:43px; background:rgba(255,255,255,.97); border-top:1px solid #edf2f3; display:flex; justify-content:space-around; align-items:center; padding:0 8px; }
+    .phone-nav span { width:18px; height:18px; display:grid; place-items:center; color:#a3b4bb; font-size:10px; }
+    .phone-nav span.active { color:#269abd; background:#e9f7fa; border-radius:6px; }
+    .phone-nav svg { width:11px; height:11px; }
+    .preview-meta { max-width:278px; margin:auto; text-align:left; }
+    .preview-meta h3 { font:800 18px 'Manrope',sans-serif; margin:0; letter-spacing:-.045em; }
+    .preview-meta p { min-height:42px; margin:7px 0 15px; color:#708894; font-size:12px; line-height:1.65; }
+    .preview-download { display:inline-flex; align-items:center; justify-content:center; gap:9px; border:0; background:transparent; padding:0; color:#218eaf; font-size:12px; font-weight:800; cursor:pointer; }
+    .preview-download svg { width:15px; height:15px; transition:transform .25s ease; }
+    .preview-download:hover svg { transform:translateY(3px); }
+    .concept-note { margin:75px 0 0; text-align:center; color:#78909a; font-size:11px; }
+
+    .ecosystem { padding:118px 0 120px; background:#fff; }
+    .ecosystem-top { display:grid; grid-template-columns:1fr .8fr; gap:80px; align-items:end; margin-bottom:65px; }
+    .ecosystem h2 { margin:0; font:800 clamp(2.6rem,5vw,4.7rem)/1.02 'Manrope',sans-serif; letter-spacing:-.075em; }
+    .ecosystem-top p { max-width:340px; margin:0; color:#6e8792; font-size:13px; line-height:1.85; }
+    .ecosystem-list { border-top:1px solid var(--line); }
+    .ecosystem-row { display:grid; grid-template-columns:64px 1fr 1.05fr 28px; align-items:center; gap:20px; padding:25px 0; border-bottom:1px solid var(--line); transition:padding .35s var(--ease); }
+    .ecosystem-row:hover { padding-inline:10px; }
+    .ecosystem-row .row-symbol { color:#39a9c8; }
+    .ecosystem-row .row-symbol svg { width:25px; height:25px; }
+    .ecosystem-row h3 { margin:0; font:800 18px 'Manrope',sans-serif; letter-spacing:-.04em; }
+    .ecosystem-row p { max-width:390px; margin:0; color:#718893; font-size:12px; line-height:1.7; }
+    .ecosystem-row .row-arrow { color:#84a2ae; transition:transform .3s var(--ease),color .3s ease; }
+    .ecosystem-row:hover .row-arrow { transform:translate(3px,-3px); color:var(--navy); }
+
+    .download-section { padding:34px 0 42px; background:#fff; }
+    .download-panel { min-height:360px; border-radius:30px; padding:70px 7%; display:flex; align-items:center; justify-content:space-between; gap:35px; position:relative; overflow:hidden; isolation:isolate; background:#123247; color:#fff; }
+    .download-panel::before { content:""; position:absolute; z-index:-1; width:540px; height:540px; border-radius:50%; right:-70px; top:-230px; background:radial-gradient(circle,rgba(105,198,229,.4),rgba(105,198,229,0) 68%); }
+    .download-panel::after { content:""; position:absolute; z-index:-1; width:380px; height:380px; border:1px solid rgba(255,255,255,.12); border-radius:50%; right:8%; bottom:-260px; box-shadow:0 0 0 35px rgba(255,255,255,.025),0 0 0 70px rgba(255,255,255,.02); }
+    .download-panel h2 { max-width:620px; margin:0; font:800 clamp(2.55rem,5vw,4.7rem)/1.02 'Manrope',sans-serif; letter-spacing:-.075em; }
+    .download-panel p { max-width:440px; margin:16px 0 0; color:#b8d0d9; font-size:13px; line-height:1.8; }
+    .download-panel .button-primary { flex:0 0 auto; background:#fff; color:var(--navy); box-shadow:0 12px 26px rgba(0,0,0,.18); }
+    .download-panel .button-primary:hover { background:#e9f7fa; }
+    .download-panel .button-primary svg { color:#2699bc; }
+    .download-caption { margin-top:13px; color:#9eb9c4; font-size:10px; text-align:center; }
+    footer { padding:31px 0 35px; background:#fff; }
+    .footer-inner { display:flex; justify-content:space-between; align-items:center; gap:24px; border-top:1px solid var(--line); padding-top:26px; }
+    .footer-copy { color:#8297a0; font-size:11px; }
+    .footer-links { display:flex; gap:22px; color:#6d8590; font-size:11px; font-weight:600; }
+
+    .reveal { opacity:1; transform:none; filter:none; }
+    .delay-1 { transition-delay:.08s; } .delay-2 { transition-delay:.16s; } .delay-3 { transition-delay:.24s; }
+    .toast { position:fixed; z-index:100; left:50%; bottom:26px; width:min(420px,calc(100% - 32px)); padding:15px 17px; border-radius:14px; background:#123247; color:#fff; box-shadow:0 18px 42px rgba(11,36,51,.28); font-size:12px; line-height:1.55; opacity:0; pointer-events:none; transform:translate(-50%,18px); transition:opacity .3s ease,transform .3s var(--ease); }
+    .toast.show { opacity:1; transform:translate(-50%,0); }
+
+    @media (max-width: 980px) {
+      :root { --page:min(100% - 44px,760px); }
+      .hero { min-height:unset; padding:142px 0 95px; }
+      .hero-grid { grid-template-columns:1fr; gap:0; }
+      .hero-copy { padding:10px 0 0; }
+      .hero-title { max-width:760px; font-size:clamp(3.4rem,9vw,5.7rem); }
+      .hero-description,.hero-tagline { max-width:540px; }
+      .campus-stage { width:min(100%,700px); margin:10px auto -15px; }
+      .panel-attendance { left:1%; } .panel-schedule { right:0; }
+      .statement-inner,.ecosystem-top { grid-template-columns:1fr; gap:25px; }
+      .statement-copy { max-width:520px; }
+      .preview-grid { gap:20px; }
+      .device-wrap,.preview-meta { max-width:235px; }
+      .phone { border-radius:30px; padding:6px; }
+      .phone-screen { border-radius:24px; }
+      .preview-card:nth-child(2) { transform:translateY(20px); }
+    }
+    @media (max-width: 700px) {
+      :root { --page:calc(100% - 38px); }
+      .topbar { height:74px; }
+      .nav-wrap { gap:12px; }
+      .brand { font-size:19px; }
+      .menu-toggle { display:grid; place-items:center; }
+      .menu-toggle svg { width:18px; height:18px; }
+      .nav-actions { gap:8px; }
+      .nav-download { display:none; }
+      .nav-links { display:none; position:absolute; top:66px; left:19px; right:19px; padding:18px; border:1px solid rgba(18,50,71,.1); border-radius:18px; background:rgba(255,255,255,.97); box-shadow:0 18px 40px rgba(18,50,71,.12); flex-direction:column; align-items:flex-start; gap:18px; }
+      .nav-links.open { display:flex; }
+      .hero { padding:124px 0 82px; }
+      .hero-title { font-size:clamp(3rem,14vw,5.1rem); }
+      .hero-tagline { margin-top:19px; font-size:12px; }
+      .hero-description { font-size:13px; }
+      .hero-buttons { gap:9px; }
+      .button-primary,.button-secondary { min-height:47px; padding:0 17px; font-size:12px; }
+      .campus-stage { margin-top:24px; width:calc(100% + 18px); margin-left:-9px; }
+      .scene-sun { width:72px; height:72px; }
+      .float-panel { padding:8px 10px; gap:7px; border-radius:12px; }
+      .float-icon { width:25px; height:25px; border-radius:8px; }
+      .float-icon svg { width:14px; height:14px; }
+      .float-panel strong { font-size:9px; } .float-panel small { font-size:7px; }
+      .panel-attendance { top:30%; } .panel-schedule { bottom:20%; } .panel-connected { left:18%; bottom:1%; }
+      .scroll-cue { bottom:20px; font-size:8px; }
+      .statement { padding:78px 0 82px; }
+      .statement h2 { font-size:clamp(2.7rem,11vw,4rem); }
+      .statement-copy { font-size:13px; }
+      .preview-section { padding:80px 0 94px; }
+      .section-heading { display:block; margin-bottom:35px; }
+      .section-heading h2 { font-size:clamp(2.8rem,11vw,4.1rem); }
+      .section-heading p { margin-top:15px; }
+      .preview-grid { grid-template-columns:1fr; gap:42px; }
+      .preview-card:nth-child(2) { transform:none; }
+      .device-wrap,.preview-meta { max-width:min(72%,285px); }
+      .phone { border-radius:36px; padding:7px; }
+      .phone-screen { border-radius:29px; }
+      .preview-meta { text-align:center; }
+      .preview-meta p { min-height:unset; }
+      .ecosystem { padding:80px 0 85px; }
+      .ecosystem-top { gap:16px; margin-bottom:38px; }
+      .ecosystem h2 { font-size:clamp(2.8rem,11vw,4.1rem); }
+      .ecosystem-row { grid-template-columns:35px 1fr 20px; gap:12px; padding:19px 0; }
+      .ecosystem-row p { grid-column:2; grid-row:2; }
+      .ecosystem-row .row-arrow { grid-column:3; grid-row:1; }
+      .ecosystem-row h3 { font-size:16px; }
+      .ecosystem-row .row-symbol svg { width:22px; height:22px; }
+      .download-section { padding:0 0 20px; }
+      .download-panel { min-height:unset; display:block; padding:42px 25px; border-radius:23px; }
+      .download-panel h2 { font-size:clamp(2.6rem,11vw,4rem); }
+      .download-panel p { font-size:12px; }
+      .download-panel .button-primary { margin-top:24px; }
+      .download-caption { text-align:left; }
+      .footer-inner { align-items:flex-start; flex-direction:column; }
+      .footer-links { flex-wrap:wrap; gap:17px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior:auto !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
+      .reveal { opacity:1; transform:none; filter:none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="nav-wrap">
+      <a class="brand" href="#home" aria-label="Scomate, beranda">
+        <span class="brand-mark" aria-hidden="true">
+          <img src="./assets/logo.png" alt="" />
+        </span>
+        <span>scomate</span>
+      </a>
+      <nav class="nav-links" id="navLinks" aria-label="Navigasi utama">
+        <a href="#home">Home</a><a href="#experience">Preview</a><a href="#ecosystem">Overview</a><a href="#download">Download</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="nav-download" type="button" data-download="android">Download app <span aria-hidden="true">↗</span></button>
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Buka navigasi" aria-expanded="false" aria-controls="navLinks">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="page-width hero-grid">
+        <div class="hero-copy">
+          <h1 class="hero-title"><span>One school.</span><span class="title-accent">One connected</span><span>ecosystem.</span></h1>
+          <p class="hero-tagline">School Management Information &amp; Technology</p>
+          <p class="hero-description">Temukan pengalaman digital sekolah dalam satu ruang yang dirancang untuk menghubungkan informasi, aktivitas, dan keseharian belajar.</p>
+          <div class="hero-buttons">
+            <button class="button-primary" type="button" data-download="android">Download Scomate <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m-5-5 5 5 5-5M4 20h16"/></svg></button>
+            <a class="button-secondary" href="#experience">Explore the app <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></a>
+          </div>
+          <div class="hero-note"><span></span> A school experience, thoughtfully connected.</div>
+        </div>
+
+        <div class="campus-stage" aria-label="Ilustrasi geometris kampus modern dengan lapisan parallax" role="img">
+          <div class="campus-scene" id="campusScene">
+            <div class="scene-glow" data-depth="-0.025"></div>
+            <div class="scene-sun" data-depth="-0.05"></div>
+            <div class="cloud one" data-depth="-0.07"></div><div class="cloud two" data-depth="-0.035"></div><div class="cloud three" data-depth="-0.09"></div>
+            <div class="mountain-back" data-depth="-0.1">
+              <svg viewBox="0 0 760 410" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M0 245 93 154 145 190 244 89 317 163 385 108 472 178 564 89 650 170 760 116V410H0Z" fill="#d3edf1"/>
+                <path d="m191 136 53-47 30 31-31-11-21 24-12-10-19 13Zm347 0 26-47 33 35-27-12-13 18-9-9Z" fill="#fff" opacity=".8"/>
+                <path d="M0 278 115 210 202 254 302 176 387 240 478 181 586 251 684 189 760 233V410H0Z" fill="#a8dce2"/>
+                <path d="M0 305Q160 242 288 294T550 281T760 280V410H0Z" fill="#86cbd3" opacity=".55"/>
+              </svg>
+            </div>
+            <div class="mountain-front" data-depth="-0.03">
+              <svg viewBox="0 0 760 360" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M0 194Q110 122 220 174T425 165T760 153V360H0Z" fill="#73c1c7" opacity=".75"/>
+                <path d="M0 244Q135 166 262 223T510 203T760 220V360H0Z" fill="#65b9bd"/>
+              </svg>
+            </div>
+            <div class="campus-buildings" data-depth="0.04">
+              <svg viewBox="0 0 760 410" preserveAspectRatio="none" aria-hidden="true">
+                <!-- distant school wing -->
+                <path d="m88 213 157-71 119 50v126H88Z" fill="#d8f3f4"/>
+                <path d="m88 213 157-71v22L88 238Z" fill="#b4e3e7"/>
+                <path d="m245 142 119 50-26 18-112-46Z" fill="#f4fcfc"/>
+                <path d="M112 231h23v28h-23zm43-19h23v28h-23zm43-19h23v28h-23zm43-19h23v28h-23z" fill="#64b7c7" opacity=".8"/>
+                <path d="M112 274h213v12H112Z" fill="#8fcfd5"/>
+                <!-- main campus block -->
+                <path d="m246 170 180-88 211 91v173H246Z" fill="#f8ffff"/>
+                <path d="m246 170 180-88v22l-180 91Z" fill="#b8e6eb"/>
+                <path d="m426 82 211 91-26 23-206-91Z" fill="#d8f2f4"/>
+                <path d="M270 178 426 104v20l-156 77Z" fill="#8ccbd4"/>
+                <path d="m426 104 184 79v20l-184-79Z" fill="#b6e3e8"/>
+                <!-- windows, left facade -->
+                <g fill="#76c4d1">
+                  <path d="M284 202 312 189v32l-28 13zm47-22 28-13v32l-28 13zm47-22 28-13v32l-28 13zm47-22 28-13v32l-28 13z"/>
+                  <path d="M284 260 312 247v32l-28 13zm47-22 28-13v32l-28 13zm47-22 28-13v32l-28 13zm47-22 28-13v32l-28 13z" opacity=".75"/>
+                </g>
+                <!-- right facade -->
+                <g fill="#61b1c3">
+                  <path d="m454 137 30 13v31l-30-13zm52 23 30 13v31l-30-13zm52 23 30 13v31l-30-13z"/>
+                  <path d="m454 199 30 13v31l-30-13zm52 23 30 13v31l-30-13zm52 23 30 13v31l-30-13z" opacity=".75"/>
+                </g>
+                <!-- entrance -->
+                <path d="m393 280 67-31 68 29v67H393Z" fill="#c8ebee"/>
+                <path d="m460 249 68 29-25 13-67-29Z" fill="#e6f8f9"/>
+                <path d="M414 291h91v55h-91Z" fill="#286b84"/>
+                <path d="M454 291h12v55h-12Z" fill="#8fd5df"/>
+                <path d="M426 303h14v21h-14zm55 0h14v21h-14z" fill="#6cb9c8"/>
+                <!-- right side wing -->
+                <path d="m548 204 92-41 78 35v137H548Z" fill="#e9f9fa"/>
+                <path d="m640 163 78 35-21 16-71-33Z" fill="#c5ebee"/>
+                <path d="M569 222h23v28h-23zm38-17h23v28h-23zm38 17h23v28h-23zM569 267h23v28h-23zm38-17h23v28h-23zm38 17h23v28h-23z" fill="#70bfcd"/>
+                <path d="M548 335h170v12H548Z" fill="#6dbdc5"/>
+                <!-- rooftop details -->
+                <path d="M389 86h75v8h-75Z" fill="#faffff"/>
+                <path d="M411 72h33v14h-33Z" fill="#5eb7c8"/>
+                <path d="M427 55h3v17h-3Z" fill="#fff"/>
+                <path d="M430 57q21-8 26 5-14 4-26-5Z" fill="#ff9b83"/>
+                <!-- garden trees -->
+                <g>
+                  <path d="M179 313h8v62h-8Z" fill="#4d9e9d"/><path d="M183 244q-43 15-36 56 8 31 37 19 31 12 40-18 9-39-41-57Z" fill="#278e8d"/><path d="M185 267q-25 12-21 35 13 11 29-3 15 8 22-10-7-18-30-22Z" fill="#45aaa6"/>
+                  <path d="M688 304h7v59h-7Z" fill="#438f91"/><path d="M691 243q-40 11-36 48 8 30 37 19 28 11 37-19 6-34-38-48Z" fill="#278987"/><path d="M692 261q-22 10-19 31 13 10 28-2 13 6 20-9-7-17-29-20Z" fill="#44aaa3"/>
+                </g>
+                <!-- campus steps -->
+                <path d="M375 346h135l30 17H345Z" fill="#d5f0f1"/>
+                <path d="M352 363h179l28 15H324Z" fill="#b8e4e7"/>
+              </svg>
+            </div>
+            <div class="campus-foreground" data-depth="0.12"></div>
+            <div class="float-panel panel-attendance" data-depth="0.15">
+              <span class="float-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8M8 7h8M5 4h14v17H5z"/><path d="m8 14 2.5 2.5L16 11"/></svg></span>
+              <span><strong>School activity</strong><small>A clearer daily overview</small></span>
+            </div>
+            <div class="float-panel panel-schedule" data-depth="0.18">
+              <span class="float-icon" style="background:#e9f7f1;color:#279a7c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 10h18m-13 4h3m-3 3h7"/></svg></span>
+              <span><strong>One shared space</strong><small>Information, in context</small></span>
+            </div>
+            <div class="float-panel panel-connected" data-depth="0.2">
+              <span class="float-icon" style="background:#fff0eb;color:#db806c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12h8m-4-4v8"/></svg></span>
+              <span><strong>Connected by design</strong><small>Made for school life</small></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="statement">
+      <div class="page-width statement-inner">
+        <h2 class="reveal">School life moves better when everything feels <span>connected.</span></h2>
+        <div class="statement-copy reveal delay-2"><p>Scomate hadir sebagai konsep ruang digital untuk lingkungan sekolah — dengan pengalaman yang terasa lebih terarah, mudah dikenali, dan nyaman digunakan.</p></div>
+      </div>
+    </section>
+
+    <section class="preview-section" id="experience">
+      <div class="page-width">
+        <div class="section-heading">
+          <h2 class="reveal">A closer look<br/>at Scomate.</h2>
+        </div>
+        <div class="preview-grid">
+          <article class="preview-card reveal">
+            <div class="phone-screen">
+                <img class="preview-shot" src="./assets/siswa.jpg" alt="Preview aplikasi Scomate"/>
+            </div>
+            <div class="preview-meta"><h3>Student experience</h3><p>A personal overview for the rhythm of each school day.</p></div>
+          </article>
+
+          <article class="preview-card reveal delay-1">
+            <div class="phone-screen">
+                <img class="preview-shot" src="./assets/guru.jpg" alt="Preview aplikasi Scomate"/>
+            </div>
+            <div class="preview-meta"><h3>Teacher experience</h3><p>A structured view for class activities and daily routines.</p></div>
+          </article>
+
+          <article class="preview-card reveal delay-2">
+            <div class="phone-screen">
+                <img class="preview-shot" src="./assets/sekretaris.jpg" alt="Preview aplikasi Scomate"/>
+            </div>
+            <div class="preview-meta"><h3>School overview</h3><p>A wider perspective for information across the school environment.</p></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="ecosystem" id="ecosystem">
+      <div class="page-width">
+        <div class="ecosystem-top">
+          <h2 class="reveal">Designed around<br/>school life.</h2>
+          <p class="reveal delay-2">Satu identitas digital yang terasa konsisten, dengan ruang yang jelas untuk setiap aktivitas dan informasi sekolah.</p>
+        </div>
+        <div class="ecosystem-list">
+          <div class="ecosystem-row reveal"><div class="row-symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M7 8h10M7 12h6m-6 4h8"/></svg></div><h3>Information, in one place.</h3><p>Pengalaman informasi yang tertata agar lebih mudah ditemukan dan dipahami.</p><div class="row-arrow">↗</div></div>
+          <div class="ecosystem-row reveal"><div class="row-symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20v-1a6 6 0 0 1 12 0v1m3-9a3 3 0 1 0 0-6m3 15v-1a6 6 0 0 0-3.5-5.45"/></svg></div><h3>Made for every role.</h3><p>Bahasa visual dan struktur yang dapat berkembang mengikuti kebutuhan lingkungan sekolah.</p><div class="row-arrow">↗</div></div>
+          <div class="ecosystem-row reveal"><div class="row-symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="9"/></svg></div><h3>A calmer digital experience.</h3><p>Fokus pada keterbacaan, navigasi yang jelas, dan interaksi yang terasa ringan.</p><div class="row-arrow">↗</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="download-section" id="download">
+      <div class="page-width">
+        <div class="download-panel reveal">
+          <div><h2>Bring your school experience together.</h2><p>Mulai jelajahi Scomate dan temukan pengalaman digital sekolah dalam satu tempat.</p></div>
+          <div><button class="button-primary" type="button" data-download="android">Download Scomate <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m-5-5 5 5 5-5M4 20h16"/></svg></button></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="page-width footer-inner"><a class="brand" href="#home"><span class="brand-mark" aria-hidden="true"><img src="./assets/logo.png" alt="" /></span><span>scomate</span></a><div class="footer-copy">© <span id="year"></span> Scomate. School Management Information &amp; Technology.</div><div class="footer-links"><a href="#home">Back to top ↑</a><a href="#experience">App preview</a></div></div></footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    // Tambahkan URL APK resmi di sini ketika file distribusi sudah tersedia.
+    // Contoh: android: "./downloads/scomate.apk" atau URL HTTPS dari server Anda.
+    const DOWNLOAD_URLS = {
+      android: "./downloads/scomate.apk"
+    };
+
+    const toast = document.getElementById('toast');
+    let toastTimer;
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 4200);
+    }
+    document.querySelectorAll('[data-download]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const key = button.dataset.download;
+        const url = DOWNLOAD_URLS[key];
+        if (!url) {
+          showToast('Error Download: File Not Exist.');
+          return;
+        }
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.download = '';
+        anchor.rel = 'noopener';
+        document.body.appendChild(anchor);
+        anchor.click();
+        anchor.remove();
+      });
+    });
+
+    // Progressive reveal: content stays visible when motion is reduced or IO is unavailable.
+    const revealItems = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.14, rootMargin: '0px 0px -35px 0px' });
+      revealItems.forEach((item) => revealObserver.observe(item));
+    } else {
+      revealItems.forEach((item) => item.classList.add('is-visible'));
+    }
+
+    // Layered scroll parallax for the campus scene, with a small pointer tilt on larger screens.
+    const scene = document.getElementById('campusScene');
+    const depthLayers = scene ? [...scene.querySelectorAll('[data-depth]')] : [];
+    let ticking = false;
+    let pointerX = 0, pointerY = 0;
+    function updateParallax() {
+      if (!scene) return;
+      const rect = scene.getBoundingClientRect();
+      const viewport = window.innerHeight || 1;
+      const progress = (viewport - rect.top) / (viewport + rect.height);
+      const scrollOffset = (progress - 0.5) * 58;
+      depthLayers.forEach((layer) => {
+        const depth = Number(layer.dataset.depth || 0);
+        const base = layer.style.transform || '';
+        layer.style.setProperty('--layer-y', `${scrollOffset * depth * 2.1}px`);
+        layer.style.translate = `0 ${scrollOffset * depth * 2.1}px`;
+      });
+      scene.style.transform = `rotateX(${pointerY}deg) rotateY(${pointerX}deg)`;
+      ticking = false;
+    }
+    window.addEventListener('scroll', () => {
+      if (!ticking) { requestAnimationFrame(updateParallax); ticking = true; }
+    }, { passive: true });
+    window.addEventListener('resize', updateParallax, { passive: true });
+    if (scene && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      const stage = scene.closest('.campus-stage');
+      stage.addEventListener('pointermove', (event) => {
+        const r = stage.getBoundingClientRect();
+        const nx = (event.clientX - r.left) / r.width - .5;
+        const ny = (event.clientY - r.top) / r.height - .5;
+        pointerX = nx * 2.1;
+        pointerY = -ny * 1.7;
+        if (!ticking) { requestAnimationFrame(updateParallax); ticking = true; }
+      });
+      stage.addEventListener('pointerleave', () => { pointerX = 0; pointerY = 0; updateParallax(); });
+    }
+    updateParallax();
+
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    menuToggle.addEventListener('click', () => {
+      const open = navLinks.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', String(open));
+      menuToggle.setAttribute('aria-label', open ? 'Tutup navigasi' : 'Buka navigasi');
+    });
+    navLinks.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.setAttribute('aria-label', 'Buka navigasi');
+    }));
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
